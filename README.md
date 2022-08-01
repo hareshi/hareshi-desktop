@@ -26,4 +26,5 @@ yarn run build # build-pr or make
 ```
 
 **if build error try this (install build tools)**
+
 -   `npm install --global windows-build-tools` or `yarn global add windows-build-tools`
