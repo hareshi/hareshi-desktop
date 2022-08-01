@@ -1,0 +1,116 @@
+name: Release
+on:
+    workflow_dispatch:
+        inputs:
+            bumpversion:
+                type: choice
+                description: Bump Version And Publish
+                required: true
+                options:
+                    - patch
+                    - minor
+                    - major
+            nobumpversion:
+                description: "No Bump Version"
+                required: false
+                default: false
+                type: boolean
+            # prerelease:
+            #     description: "This is a pre-releasee"
+            #     required: false
+            #     default: false
+            #     type: boolean
+
+env:
+    nobumpver: ${{ github.event.inputs.nobumpversion || true }}
+    bumpver: ${{ github.event.inputs.bumpversion }}
+    ghtoken: ${{ secrets.TOKEN }}
+
+jobs:
+    # Test:
+    #     runs-on: ubuntu-latest
+    #     steps:
+    #         - name: Checkout
+    #           uses: actions/checkout@v3
+    #           with:
+    #               fetch-depth: 0
+
+    #         - name: Setup Node
+    #           uses: actions/setup-node@v3
+    #           with:
+    #               node-version: 16
+    #               cache: "yarn"
+
+    #         - name: Install Dependencies
+    #           run: yarn install
+    #         - name: Run Test
+    #           run: yarn run test
+
+    BumpVersion:
+        # needs: [Test]
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+
+            - name: Setup Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 18
+                  cache: "yarn"
+
+            - name: Bump a package version
+              if: ${{ env.bumpver && env.nobumpver == 'false' }}
+              id: bumpversion
+              run: |
+                  git config --local user.email "actions@github.com"
+                  git config --local user.name "GitHub Actions"
+                  npm config set git-tag-version false
+                  npm version $bumpver -m "workflows: Bump Version %s"
+
+            - name: Get Version
+              if: steps.bumpversion.outcome == 'success'
+              id: package
+              uses: Saionaro/extract-package-version@v1.1.1
+
+            - name: Automatically Commit Changed
+              if: ${{ env.nobumpver == 'false' && steps.package.outcome == 'success' }}
+              id: commit_changed
+              uses: stefanzweifel/git-auto-commit-action@v4
+              with:
+                  push_options: "--force"
+                  commit_options: "--no-verify"
+                  commit_message: "workflows: Bump Version ${{ steps.package.outputs.version }}"
+                  commit_user_name: GitHub Actions
+                  commit_user_email: actions@github.com
+                  commit_author: GitHub Actions <actions@github.com>
+                  tagging_message: v${{ steps.package.outputs.version }}
+                  skip_checkout: true
+
+            - name: Generate Changelog
+              if: steps.commit_changed.outcome == 'success'
+              id: changelog
+              uses: jaywcjlove/changelog-generator@v1.5.7
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  head-ref: ${{steps.create_tag.outputs.version}}
+                  filter-author: (!actions-user)
+                  filter: (^[\s]+?[R|r]elease)|(^[R|r]elease)
+                  original-markdown: true
+
+            - name: Create Release
+              if: steps.changelog.outcome == 'success'
+              id: create_release
+              uses: actions/create-release@v1
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                  release_name: ${{ steps.package.outputs.version }}
+                  tag_name: v${{  steps.package.outputs.version  }}
+                  body: |
+                       ${{ steps.changelog.outputs.compareurl }}
+                       ${{ steps.changelog.outputs.changelog }}
+                  # prerelease: ${{ github.event.inputs.prerelease }}
+                  draft: false

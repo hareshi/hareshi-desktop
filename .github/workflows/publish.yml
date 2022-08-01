@@ -1,0 +1,85 @@
+name: Publish
+on:
+    # workflow_dispatch:
+    workflow_run:
+        workflows: ["Release"]
+        types:
+            - completed
+
+jobs:
+    create_release:
+        runs-on: ubuntu-latest
+        outputs:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+
+            - name: Get Version
+              id: package
+              uses: Saionaro/extract-package-version@v1.1.1
+
+            # - name: Create Release
+            #   id: create_release
+            #   uses: ncipollo/release-action@v1
+            #   with:
+            #       allowUpdates : true
+            #       tag: v${{ steps.package.outputs.version }}
+            #       owner: hareshi
+            #       repo: hareshi-desktop
+            #       prerelease: false
+            #       draft: false
+            #       token: ${{ secrets.GITHUB_TOKEN }}
+
+    Publish:
+        needs: [create_release]
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                os: [macos-latest, ubuntu-latest, windows-latest]
+                include:
+                - os: macos-latest
+                  asar_name: app-darwin-x64.asar
+                  asar_path: ./out/Hareshi-darwin-x64/Hareshi.app/Contents/Resources/app.asar
+
+                - os: ubuntu-latest
+                  asar_name: app-linux-x64.asar
+                  asar_path: ./out/Hareshi-linux-x64/resources/app.asar
+
+                - os: windows-latest
+                  asar_name: app-win32-x64.asar
+                  asar_path: ./out/Hareshi-win32-x64/resources/app.asar
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+
+            - name: Setup Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 18
+                  cache: "yarn"
+
+            - name: install dependencies
+              run: yarn install
+            - name: publish
+              id: publish
+              env:
+                  RUN_OS: ${{ matrix.os }}
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: yarn run publish
+
+            # - name: Upload asar
+            #   if: steps.publish.outcome == 'success'
+            #   uses: actions/upload-release-asset@v1
+            #   env:
+            #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            #   with:
+            #       upload_url: ${{ needs.create_release.outputs.upload_url}}
+            #       asset_path: ${{ matrix.asar_path }}
+            #       asset_name: ${{ matrix.asar_name }}
+            #       asset_content_type: application/octet-stream

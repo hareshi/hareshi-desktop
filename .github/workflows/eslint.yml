@@ -1,0 +1,42 @@
+name: ESLint
+on:
+    workflow_dispatch:
+    pull_request:
+        paths: 
+            - "**.ts"
+            - "**.js"
+    push:
+        paths:
+            - "**.ts"
+            - "**.js"
+
+jobs:
+    ESLint:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+
+            - name: Setup Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 18
+                  cache: "yarn"
+
+            - name: Install Dependencies
+              run: yarn install
+            - name: Run ESLint
+              run: yarn run fix
+
+            - name: Automatically Commit Changed
+              uses: stefanzweifel/git-auto-commit-action@v4
+              with:
+                  push_options: "--force"
+                  commit_options: "--no-verify"
+                  commit_message: "workflows: fix problems!"
+                  commit_user_name: GitHub Actions
+                  commit_user_email: actions@github.com
+                  commit_author: GitHub Actions <actions@github.com>
+                  skip_checkout: true

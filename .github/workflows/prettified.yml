@@ -1,0 +1,22 @@
+name: Code Formatter
+on:
+    workflow_dispatch:
+    push:
+
+jobs:
+    Prettier:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+                  token: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Prettier
+              uses: creyD/prettier_action@v4.2
+              with:
+                commit_message: "workflows: prettified code!"
+                prettier_options: --write --ignore-path ./.prettierignore --config ./.prettierrc .
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  

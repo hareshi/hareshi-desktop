@@ -1,0 +1,21 @@
+{
+	"compilerOptions": {
+		"module": "CommonJS",
+		"target": "ESNext",
+		"allowJs": true,
+		"esModuleInterop": true,
+		"noImplicitAny": true,
+		"sourceMap": true,
+		"removeComments": true,
+		"charset": "utf8",
+		"emitBOM": true,
+		"baseUrl": ".",
+		"outDir": "app",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"paths": {
+			"*": ["node_modules/*"]
+		}
+	},
+	"include": ["src/**/*"]
+}

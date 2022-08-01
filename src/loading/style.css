@@ -1,0 +1,116 @@
+*,
+::after,
+::before {
+	margin: 0;
+	box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+	display: none;
+}
+
+* {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+* {
+	/*light*/
+	--shadow-color: 220 3% 15%;
+	--shadow-strength: 1%;
+	--progress-container-bg-color: white;
+	--load-path: hsl(228 100% 90%);
+	--loader: hsl(228 100% 50%);
+	--bg-color: var(--gray-0);
+	--text1: var(--gray-7);
+}
+
+@media (prefers-color-scheme: dark) {
+	* {
+		/*dark*/
+		--shadow-strength: 25%;
+		--shadow-color: 220 40% 2%;
+		--progress-container-bg-color: #4b3d41;
+		--load-path: #32262a;
+		--loader: #ff6c96;
+		--bg-color: #332228;
+		--text1: var(--gray-4);
+	}
+}
+
+:root {
+	--gray-0: #f8f9fa;
+	--gray-4: #ced4da;
+	--gray-7: #495057;
+	--gray-8: #343a40;
+	--surface-4: #212529;
+	--transition-time: 0.5s;
+	--animation-time: 1.5s;
+	--bg-transition: background 0.2s;
+	--shadow-5: 0 -1px 2px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)), 0 2px 1px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
+		0 5px 5px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)), 0 10px 10px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 4%)),
+		0 20px 20px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 5%)), 0 40px 40px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 7%));
+}
+
+.container {
+	height: 100vh;
+	width: 100vw;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	padding: 20px 0px;
+	background-color: var(--bg-color);
+}
+
+.text {
+	font-family: sans-serif;
+	margin: auto 0px 20px 0px;
+	color: var(--text1);
+}
+
+.progress-bar {
+	background: var(--progress-container-bg-color);
+	border-radius: 30px;
+	display: flex;
+	align-items: center;
+	padding: 15px;
+	margin-bottom: 20px;
+	box-shadow: var(--shadow-5);
+}
+
+.load {
+	animation: load var(--animation-time) ease-in-out infinite;
+}
+
+#path {
+	stroke-width: 6px;
+	stroke: var(--load-path);
+	stroke-linecap: round;
+}
+
+#loader-line {
+	stroke: var(--loader);
+	fill: none;
+	stroke-width: 6px;
+	stroke-dashoffset: 400;
+	stroke-dasharray: 400;
+	transition: stroke-dasharray ease-in-out var(--transition-time);
+	stroke-linecap: round;
+}
+
+@keyframes load {
+	0% {
+		stroke-dasharray: 198;
+	}
+	50% {
+		stroke-dasharray: 265;
+	}
+	100% {
+		stroke-dasharray: 198;
+	}
+}

@@ -1,0 +1,100 @@
+{
+	"name": "hareshi",
+	"productName": "Hareshi",
+	"version": "0.0.0",
+	"description": "Hareshi desktop application",
+	"main": ".webpack/main",
+	"engines": {
+		"yarn": "1.x"
+	},
+	"scripts": {
+		"start": "electron-forge start",
+		"start_dev": "electron-forge start",
+		"dev": "node ./script/development.js",
+		"make": "electron-forge make",
+		"build": "del-cli --force ./out && yarn run make",
+		"build-pr": "del-cli --force ./package-lock.json && del-cli --force ./node_modules && yarn install && yarn run build",
+		"package": "electron-forge package",
+		"publish": "electron-forge publish",
+		"test": "ts-node-dev test/version.ts",
+		"build_asar": "ts-node-dev script/asar.ts",
+		"lint": "eslint . --debug",
+		"clean": "del-cli --force ./webpack && del-cli --force ./out",
+		"fix": "eslint . --fix --debug",
+		"prettier": "prettier --config .prettierrc --write ."
+	},
+	"config": {
+		"forge": "./forge.config.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/hareshi/hareshi-desktop"
+	},
+	"author": {
+		"name": "Hareshi",
+		"email": "h4reshi@gmail.com"
+	},
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com"
+	},
+	"license": "GPL-3.0",
+	"devDependencies": {
+		"@babel/core": "7.18.9",
+		"@babel/eslint-parser": "7.18.9",
+		"@electron-forge/cli": "6.0.0-beta.65",
+		"@electron-forge/maker-deb": "6.0.0-beta.65",
+		"@electron-forge/maker-dmg": "6.0.0-beta.65",
+		"@electron-forge/maker-rpm": "6.0.0-beta.65",
+		"@electron-forge/maker-squirrel": "6.0.0-beta.65",
+		"@electron-forge/maker-zip": "6.0.0-beta.65",
+		"@electron-forge/plugin-electronegativity": "6.0.0-beta.65",
+		"@electron-forge/plugin-webpack": "6.0.0-beta.65",
+		"@electron-forge/publisher-github": "6.0.0-beta.65",
+		"@types/axios": "0.14.0",
+		"@types/capitalize": "2.0.0",
+		"@types/request": "2.48.8",
+		"@typescript-eslint/eslint-plugin": "5.31.0",
+		"@typescript-eslint/parser": "5.31.0",
+		"@vercel/webpack-asset-relocator-loader": "1.7.3",
+		"css-loader": "6.7.1",
+		"electron": "19.0.10",
+		"electron-icon-builder": "2.0.1",
+		"eslint": "8.21.0",
+		"eslint-config-prettier": "8.5.0",
+		"eslint-plugin-import": "2.26.0",
+		"eslint-plugin-json": "3.1.0",
+		"eslint-plugin-prettier": "4.2.1",
+		"eslint-plugin-sort-keys-fix": "1.1.2",
+		"eslint-plugin-typescript-sort-keys": "2.1.0",
+		"eslint-plugin-unicorn": "43.0.2",
+		"eslint-webpack-plugin": "3.2.0",
+		"fork-ts-checker-webpack-plugin": "7.2.13",
+		"node-loader": "2.0.0",
+		"prettier": "2.7.1",
+		"style-loader": "3.3.1",
+		"ts-loader": "9.3.1",
+		"ts-node-dev": "2.0.0",
+		"typescript": "4.7.4"
+	},
+	"dependencies": {
+		"@actions/core": "1.9.0",
+		"@lxfriday/nodejs-file-downloader": "4.9.5",
+		"@types/fs-extra": "9.0.13",
+		"@types/node": "18.6.3",
+		"asar": "3.2.0",
+		"axios": "0.27.2",
+		"capitalize": "2.0.4",
+		"chokidar": "3.5.3",
+		"custom-electron-titlebar": "4.1.0",
+		"del-cli": "5.0.0",
+		"electron-is-dev": "2.0.0",
+		"electron-log": "4.4.8",
+		"electron-store": "8.1.0",
+		"electron-updater": "5.2.1",
+		"npm-check-updates": "16.0.4",
+		"open": "8.4.0",
+		"semver": "7.3.7",
+		"terser": "5.14.2",
+		"tslog": "3.3.3"
+	}
+}

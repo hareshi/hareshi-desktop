@@ -1,0 +1,32 @@
+name: Test Build
+on:
+    workflow_dispatch:
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    Publish:
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                os: [macos-latest, ubuntu-latest, windows-latest]
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+
+            - name: Setup Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 18
+                  cache: "yarn"
+
+            - name: install dependencies
+              run: yarn install
+            - name: run test build
+              env:
+                  RUN_OS: ${{ matrix.os }}
+                  GITHUB_TOKEN: ${{ secrets.TOKEN }}
+              run: yarn run make
