@@ -27,11 +27,13 @@ yarn run build # build-pr or make
 
 **if build error try this (install build tools)**<br>
 Linux
+
 ```
 sudo apt install rpm
 ```
 
 Windows
+
 ```
 yarn global add windows-build-tools
 ```
