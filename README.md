@@ -25,6 +25,13 @@ yarn run start
 yarn run build # build-pr or make
 ```
 
-**if build error try this (install build tools)**
+**if build error try this (install build tools)**<br>
+Linux
+```
+sudo apt install rpm
+```
 
--   `npm install --global windows-build-tools` or `yarn global add windows-build-tools`
+Windows
+```
+yarn global add windows-build-tools
+```
