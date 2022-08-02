@@ -3,19 +3,22 @@ import { join } from "node:path";
 // @ts-ignore
 import { attachTitlebarToWindow, setupTitlebar } from "custom-electron-titlebar/main";
 import electronDev from "electron-is-dev";
+import process from "node:process";
 import DiscordPresence from "../discord/presence";
 import initTray from "./tray";
 import AppUpdate from "./update";
 import("./menu");
 
-setupTitlebar();
+if (process.platform === "win32") {
+	setupTitlebar();
+}
 
 export default function browser() {
 	let mainWindow: BrowserWindow, loading: BrowserWindow;
 
 	const createWindow = (): void => {
 			mainWindow = new BrowserWindow({
-				autoHideMenuBar: true,
+				autoHideMenuBar: process.platform === "win32",
 				height: 760,
 				icon: join(__dirname, "..", "icons/png/512x512.png"),
 				show: false,

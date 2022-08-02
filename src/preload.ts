@@ -1,14 +1,17 @@
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 import { Color, Titlebar } from "custom-electron-titlebar";
 import { ipcRenderer } from "electron";
+import process from "node:process";
 import { Activity } from "./types/presence";
 
 window.addEventListener("DOMContentLoaded", () => {
-	new Titlebar({
-		backgroundColor: Color.fromHex("#332228"),
-		iconSize: 20,
-		titleHorizontalAlignment: "center",
-	});
+	if (process.platform === "win32") {
+		new Titlebar({
+			backgroundColor: Color.fromHex("#332228"),
+			iconSize: 20,
+			titleHorizontalAlignment: "center",
+		});
+	}
 
 	/**
 	 * Discord Presence
