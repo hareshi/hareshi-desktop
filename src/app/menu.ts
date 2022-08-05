@@ -16,7 +16,7 @@ Menu.setApplicationMenu(
 		},
 		{
 			click: () => {
-				BrowserWindow?.fromId(1).webContents.goBack();
+				BrowserWindow?.getAllWindows()[0].webContents.goBack();
 			},
 			label: "Back",
 		},
