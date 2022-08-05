@@ -26,8 +26,7 @@ export default function browser() {
 				webPreferences: {
 					contextIsolation: true,
 					devTools: electronDev,
-					nodeIntegration: false,
-					nodeIntegrationInWorker: false,
+					nodeIntegration: true,
 					preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
 					webSecurity: true,
 					webgl: true,
