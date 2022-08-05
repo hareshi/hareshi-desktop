@@ -109,6 +109,12 @@ export default class AppUpdate {
 									break;
 								default:
 									mainWindow.show();
+									app.on("second-instance", (event, commandLine, workingDirectory) => {
+										if (mainWindow) {
+											if (mainWindow.isMinimized()) mainWindow.restore();
+											mainWindow.focus();
+										}
+									});
 									break;
 							}
 							loader.destroy();

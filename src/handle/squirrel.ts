@@ -63,6 +63,14 @@ new Logger({
 		case "--squirrel-obsolete":
 			return app.quit();
 		default:
-			return import("../index");
+			if (process.defaultApp) {
+				if (process.argv.length >= 2) {
+					app.setAsDefaultProtocolClient("hareshi", process.execPath, [resolve(process.argv[1])]);
+				}
+			} else {
+				app.setAsDefaultProtocolClient("hareshi");
+			}
+			import("../index");
+			break;
 	}
 })();

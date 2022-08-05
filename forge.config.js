@@ -32,6 +32,7 @@ module.exports = {
 			config: {
 				executableName: "hareshi",
 				icon: path.join(__dirname, "/icons/mac/icon.icns"),
+				mimeType: ["x-scheme-handler/hareshi"],
 			},
 			name: "@electron-forge/maker-deb",
 		},
@@ -58,6 +59,12 @@ module.exports = {
 		executableName: "hareshi",
 		icon: process.env.RUN_OS === "macos-latest" ? path.join(__dirname, "/icons/mac/icon.icns") : path.join(__dirname, "/icons/win/icon.ico"),
 		ignore,
+		protocols: [
+			{
+				name: "Hareshi",
+				schemes: ["hareshi"],
+			},
+		],
 	},
 	plugins: [
 		[
