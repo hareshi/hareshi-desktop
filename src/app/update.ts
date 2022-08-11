@@ -14,7 +14,7 @@ import { dialogs } from "./dialog";
 const update_platform = new Set(["win32", "darwin", "linux"]);
 autoUpdater.setFeedURL({
 	headers: { "User-Agent": format("%s/%s (% s: %s)", "hareshi", app.getVersion(), process.platform, process.arch) },
-	url: `https://update.electronjs.org/Hareshi/desktop/${process.platform}-${process.arch}/${app.getVersion()}`,
+	url: `https://update.electronjs.org/Hareshi/hareshi-desktop/${process.platform}-${process.arch}/${app.getVersion()}`,
 });
 
 export default class AppUpdate {
