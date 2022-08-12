@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 import chokidar from "chokidar";
-import { app, autoUpdater, BrowserWindow, ipcMain, IpcMainEvent, MessageBoxReturnValue } from "electron";
+import { app, autoUpdater, BrowserWindow, ipcMain, IpcMainEvent, MessageBoxReturnValue, session } from "electron";
 import electronDev from "electron-is-dev";
 import { error, info } from "electron-log";
 import { join, resolve } from "node:path";
@@ -24,7 +24,8 @@ export default class AppUpdate {
 	static isInitialized = false;
 	static startup() {
 		const loader = BrowserWindow.fromId(1),
-			mainWindow = BrowserWindow.fromId(2);
+			mainWindow = BrowserWindow.fromId(2),
+			SignIn = BrowserWindow.fromId(3);
 
 		ipcMain.once("asynchronous-message", async (event: IpcMainEvent) => {
 			event.sender.send("loader", { run: "init", title: `Checking for update` } as option);
@@ -99,24 +100,55 @@ export default class AppUpdate {
 					mainWindow.once("ready-to-show", () => {
 						event.sender.send("loader", { run: "complete", title: "> <" } as option);
 						setTimeout(() => {
-							switch (process.argv[1]) {
-								case "--Hidden":
-									if (loader.isFocused() && loader.isVisible()) {
-										mainWindow.show();
-									} else if (!mainWindow.isMinimized()) {
-										mainWindow.minimize();
+							session.defaultSession.cookies.get({ url: "https://forum.hareshi.net" }).then((cookies) => {
+								// eslint-disable-next-line unicorn/prefer-array-some
+								if (cookies.find((c) => c.name === "xf_user")) {
+									SignIn.destroy();
+									switch (process.argv[1]) {
+										case "--Hidden":
+											if (loader.isFocused() && loader.isVisible()) {
+												mainWindow.show();
+											} else if (!mainWindow.isMinimized()) {
+												mainWindow.minimize();
+											}
+											break;
+										default:
+											mainWindow.show();
+											break;
 									}
-									break;
-								default:
-									mainWindow.show();
-									app.on("second-instance", (event, commandLine, workingDirectory) => {
-										if (mainWindow) {
-											if (mainWindow.isMinimized()) mainWindow.restore();
-											mainWindow.focus();
+								} else {
+									switch (process.argv[1]) {
+										case "--Hidden":
+											if (loader.isFocused() && loader.isVisible()) {
+												SignIn.show();
+											} else if (!SignIn.isMinimized()) {
+												SignIn.minimize();
+											}
+											break;
+										default:
+											SignIn.show();
+											break;
+									}
+								}
+								ipcMain.on("signin", (event: IpcMainEvent, argv) => {
+									session.defaultSession.cookies.get({ url: "https://forum.hareshi.net" }).then((cookies) => {
+										// eslint-disable-next-line unicorn/prefer-array-some
+										if (cookies.find((c) => c.name === "xf_user")) {
+											SignIn.destroy();
+											mainWindow.reload();
+											mainWindow.once("ready-to-show", () => {
+												mainWindow.show();
+											});
 										}
 									});
-									break;
-							}
+								});
+							});
+							app.on("second-instance", (event, commandLine, workingDirectory) => {
+								if (mainWindow) {
+									if (mainWindow.isMinimized()) mainWindow.restore();
+									mainWindow.focus();
+								}
+							});
 							loader.destroy();
 							this.initialized();
 						}, 750);

@@ -95,6 +95,13 @@ module.exports = {
 								js: "./src/preload.ts",
 							},
 						},
+						{
+							js: "./src/renderer.ts",
+							name: "signin",
+							preload: {
+								js: "./src/signin.ts",
+							},
+						},
 					],
 				},
 			},

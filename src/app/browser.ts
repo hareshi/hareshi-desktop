@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Event, NewWindowWebContentsEvent } from "electron";
+import { app, BrowserWindow, Event, NewWindowWebContentsEvent, session } from "electron";
 import { join } from "node:path";
 // @ts-ignore
 import { attachTitlebarToWindow, setupTitlebar } from "custom-electron-titlebar/main";
@@ -7,14 +7,17 @@ import process from "node:process";
 import DiscordPresence from "../discord/presence";
 import initTray from "./tray";
 import AppUpdate from "./update";
+import { Deeplink } from "electron-deeplink";
 import("./menu");
 
 if (process.platform === "win32") {
 	setupTitlebar();
 }
 
+const protocol = electronDev ? "dev-hareshi" : "hareshi";
+
 export default function browser() {
-	let mainWindow: BrowserWindow, loading: BrowserWindow;
+	let mainWindow: BrowserWindow, loading: BrowserWindow, sign_in: BrowserWindow;
 
 	const createWindow = (): void => {
 			mainWindow = new BrowserWindow({
@@ -58,6 +61,25 @@ export default function browser() {
 				width: 500,
 			});
 			loading.loadURL(LOADING_WEBPACK_ENTRY);
+		},
+		createSignIn = (): void => {
+			sign_in = new BrowserWindow({
+				autoHideMenuBar: process.platform === "win32",
+				height: 480,
+				icon: join(__dirname, "..", "icons/png/512x512.png"),
+				show: false,
+				title: "Login",
+				titleBarStyle: "hidden",
+				webPreferences: {
+					contextIsolation: false,
+					devTools: electronDev,
+					nodeIntegration: true,
+					preload: SIGNIN_PRELOAD_WEBPACK_ENTRY,
+				},
+				width: 910,
+			});
+			attachTitlebarToWindow(mainWindow);
+			sign_in.loadURL("https://forum.hareshi.net/login/");
 		};
 
 	app.once("ready", () => {
@@ -66,6 +88,7 @@ export default function browser() {
 		} else {
 			createLoading();
 			createWindow();
+			createSignIn();
 			loading.once("ready-to-show", () => {
 				switch (process.argv[1]) {
 					case "--Hidden":
@@ -77,9 +100,19 @@ export default function browser() {
 						break;
 				}
 			});
+			sign_in.once("ready-to-show", () => {
+				const deeplink = new Deeplink({ app, isDev: electronDev, mainWindow: sign_in, protocol });
+				deeplink.on("received", (link) => {
+					sign_in.loadURL(link?.replace(protocol, "https"));
+				});
+			});
 			initTray();
 			AppUpdate.startup();
 			DiscordPresence.connecting(!electronDev);
+			sign_in.on("close", function (event: Event) {
+				event.preventDefault();
+				sign_in.hide();
+			});
 			mainWindow.on("close", function (event: Event) {
 				event.preventDefault();
 				mainWindow.hide();

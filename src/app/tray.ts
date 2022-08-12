@@ -26,7 +26,7 @@ export default function initTray() {
 		tray.setToolTip(app.name);
 		tray.setTitle(app.name);
 		tray.on("click", () => {
-			const mainWindow = BrowserWindow?.fromId(1) ?? BrowserWindow.fromId(2);
+			const mainWindow = BrowserWindow?.fromId(1) ?? BrowserWindow?.fromId(3) ?? BrowserWindow.fromId(2);
 			if (!mainWindow.isVisible() || false) {
 				mainWindow.show();
 			} else if (mainWindow.isMinimized() || false) {
