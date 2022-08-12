@@ -91,6 +91,7 @@
 		"electron-log": "4.4.8",
 		"electron-store": "8.1.0",
 		"electron-updater": "5.2.1",
+		"electron-deeplink": "1.0.10",
 		"npm-check-updates": "16.0.4",
 		"open": "8.4.0",
 		"semver": "7.3.7",
