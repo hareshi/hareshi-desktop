@@ -11,7 +11,7 @@ import { clean, diff } from "semver";
 import option from "../types/loader";
 import { dialogs } from "./dialog";
 
-const update_platform = new Set(["win32", "darwin", "linux"]);
+const update_platform = new Set(["win32", "darwin"]);
 autoUpdater.setFeedURL({
 	headers: { "User-Agent": format("%s/%s (% s: %s)", "hareshi", app.getVersion(), process.platform, process.arch) },
 	url: `https://update.electronjs.org/Hareshi/hareshi-desktop/${process.platform}-${process.arch}/${app.getVersion()}`,
@@ -81,7 +81,7 @@ export default class AppUpdate {
 								event.sender.send("loader", { run: "error", title: `Update error: ${updateServer?.status || ""}` } as option);
 							}
 						})();
-					} else if (["darwin", "linux"].includes(process.platform)) {
+					} else if (["darwin"].includes(process.platform)) {
 						try {
 							autoUpdater.checkForUpdates();
 						} catch {
