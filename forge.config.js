@@ -52,17 +52,21 @@ module.exports = {
 			platforms: ["darwin"],
 		},
 		{
-			config: {
-				features: {
-					audio: true,
-					browserSandbox: true,
-					mpris: "com.hareshi.net",
-					webgl: true,
-				},
-				summary: "Desktop Application",
-			},
-			name: "@electron-forge/maker-snap",
+			name: "electron-forge-maker-appimage",
+			platforms: ["linux"],
 		},
+		// {
+		// 	config: {
+		// 		features: {
+		// 			audio: true,
+		// 			browserSandbox: true,
+		// 			mpris: "com.hareshi.net",
+		// 			webgl: true,
+		// 		},
+		// 		summary: "Desktop Application",
+		// 	},
+		// 	name: "@electron-forge/maker-snap",
+		// },
 	],
 	packagerConfig: {
 		// arch: ["ia32", "x64", "armv7l", "arm64"],
