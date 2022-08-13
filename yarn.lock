@@ -499,6 +499,16 @@
   optionalDependencies:
     electron-installer-redhat "^3.2.0"
 
+"@electron-forge/maker-snap@6.0.0-beta.65":
+  version "6.0.0-beta.65"
+  resolved "https://registry.yarnpkg.com/@electron-forge/maker-snap/-/maker-snap-6.0.0-beta.65.tgz#dcfc03f91ba7a95db46ce378f9fc23251fdfffb7"
+  integrity sha512-Wr7nOBs6TN4YOQl5MyTPo9607g+N04CLL4A7uMaLpj3QencZ8CBUCakaeeeKn4t7ADyBpPFzKawyz7WMKMETQw==
+  dependencies:
+    "@electron-forge/maker-base" "6.0.0-beta.65"
+    "@electron-forge/shared-types" "6.0.0-beta.65"
+  optionalDependencies:
+    electron-installer-snap "^5.1.0"
+
 "@electron-forge/maker-squirrel@6.0.0-beta.65":
   version "6.0.0-beta.65"
   resolved "https://registry.yarnpkg.com/@electron-forge/maker-squirrel/-/maker-squirrel-6.0.0-beta.65.tgz#84bbea588464d66b22aa7431104d5b396548583a"
@@ -3827,6 +3837,22 @@ electron-installer-redhat@^3.2.0:
     word-wrap "^1.2.3"
     yargs "^16.0.2"
 
+electron-installer-snap@^5.1.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/electron-installer-snap/-/electron-installer-snap-5.2.0.tgz#8dd637dc94d4279d790d728b7bdb23fe9415377d"
+  integrity sha512-SRm7pCpNHMXV545JjScV8fLC9NhFli5r8L8Ju4EHdXwRh76+mwrJoUEDLItixBudZ5Mcgz1SJcDPJfWpEQWX7Q==
+  dependencies:
+    "@malept/cross-spawn-promise" "^1.0.0"
+    debug "^4.3.4"
+    electron-installer-common "^0.10.2"
+    fs-extra "^9.0.0"
+    js-yaml "^3.10.0"
+    lodash "^4.17.15"
+    semver "^7.1.1"
+    tmp-promise "^3.0.2"
+    which "^2.0.1"
+    yargs "^16.0.2"
+
 electron-is-dev@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/electron-is-dev/-/electron-is-dev-2.0.0.tgz#833487a069b8dad21425c67a19847d9064ab19bd"
@@ -6273,7 +6299,7 @@ js-yaml@4.0.0:
   dependencies:
     argparse "^2.0.1"
 
-js-yaml@^3.13.1:
+js-yaml@^3.10.0, js-yaml@^3.13.1:
   version "3.14.1"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.14.1.tgz#dae812fdb3825fa306609a8717383c50c36a0537"
   integrity sha512-okMH7OXXJ7YrN9Ok3/SXrnu4iX9yOk+25nqX4imS2npuvTYDmo/QEZoqwZkYaIDk3jVvBOTOIEgEhaLOynBS9g==

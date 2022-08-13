@@ -51,6 +51,18 @@ module.exports = {
 			name: "@electron-forge/maker-dmg",
 			platforms: ["darwin"],
 		},
+		{
+			config: {
+				features: {
+					audio: true,
+					browserSandbox: true,
+					mpris: "com.hareshi.net",
+					webgl: true,
+				},
+				summary: "Desktop Application",
+			},
+			name: "@electron-forge/maker-snap",
+		},
 	],
 	packagerConfig: {
 		// arch: ["ia32", "x64", "armv7l", "arm64"],
