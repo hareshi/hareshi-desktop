@@ -1,7 +1,7 @@
 {
 	"name": "hareshi",
 	"productName": "Hareshi",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"description": "Hareshi desktop application",
 	"main": ".webpack/main",
 	"engines": {
