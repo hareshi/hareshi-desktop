@@ -96,7 +96,7 @@
 		"npm-check-updates": "16.0.5",
 		"open": "8.4.0",
 		"semver": "7.3.7",
-		"terser": "5.14.2",
+		"terser": "5.15.0",
 		"tslog": "3.3.3"
 	}
 }
