@@ -39,7 +39,7 @@
 	},
 	"license": "GPL-3.0",
 	"devDependencies": {
-		"@babel/core": "7.18.10",
+		"@babel/core": "7.19.0",
 		"@babel/eslint-parser": "7.18.9",
 		"@electron-forge/cli": "6.0.0-beta.65",
 		"@electron-forge/maker-deb": "6.0.0-beta.65",
